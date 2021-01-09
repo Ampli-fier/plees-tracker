@@ -287,14 +287,13 @@ object DataModel {
 
     fun formatDuration(seconds: Long): String {
         return String.format(
-            Locale.getDefault(), "%d:%02d:%02d",
-            seconds / 3600, seconds % 3600 / 60,
-            seconds % 60
+            Locale.getDefault(), "%d:%02d",
+            seconds / 3600, seconds % 3600 / 60
         )
     }
 
     fun formatTimestamp(date: Date): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         return sdf.format(date)
     }
 
