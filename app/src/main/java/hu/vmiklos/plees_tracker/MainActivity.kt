@@ -114,12 +114,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * If there is a rating bar inside this recycler view, get that.
      */
-    private fun findRatingBar(rv: RecyclerView, e: MotionEvent): View? {
-        val sleepItem = rv.findChildViewUnder(e.x, e.y) ?: return null
-        val ratingBar = sleepItem.findViewById<View>(R.id.sleep_item_rating)
-        if (hitTest(ratingBar, e.x, e.y)) {
-            return ratingBar
-        }
+    private fun findRatingBar(): View? {
         return null
     }
 
@@ -135,7 +130,7 @@ class MainActivity : AppCompatActivity() {
         preferences.registerOnSharedPreferenceChangeListener(sharedPreferenceListener)
         DataModel.init(applicationContext, preferences)
 
-        val sleepsAdapter = SleepsAdapter(viewModel)
+        val sleepsAdapter = SleepsAdapter()
         DataModel.sleepsLive.observe(
             this,
             { sleeps ->
@@ -168,22 +163,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
-        // Swipe on the rating bar goes to the rating bar itself.
-        recyclerView.addOnItemTouchListener(
-            object : RecyclerView.SimpleOnItemTouchListener() {
-                override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                    return findRatingBar(rv, e) != null
-                }
 
-                override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
-                    val ratingBar = findRatingBar(rv, e) ?: return
-                    val x = e.x - (ratingBar.left + ratingBar.translationX)
-                    val y = e.y - (ratingBar.top + ratingBar.translationY)
-                    e.setLocation(x, y)
-                    ratingBar.onTouchEvent(e)
-                }
-            }
-        )
 
         // Otherwise swipe on a card view deletes it.
         val itemTouchHelper = ItemTouchHelper(

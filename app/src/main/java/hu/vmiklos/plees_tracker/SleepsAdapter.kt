@@ -9,7 +9,6 @@ package hu.vmiklos.plees_tracker
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -19,9 +18,7 @@ import java.util.Date
 /**
  * This is the adapter between RecyclerView and SleepDao.
  */
-class SleepsAdapter(
-    private val viewModel: MainViewModel
-) : RecyclerView.Adapter<SleepsAdapter.SleepViewHolder>() {
+class SleepsAdapter : RecyclerView.Adapter<SleepsAdapter.SleepViewHolder>() {
     var data: List<Sleep> = ArrayList()
         set(newData) {
             val previousData = field
@@ -84,8 +81,6 @@ class SleepsAdapter(
         val durationMS = sleep.stop - sleep.start
         val durationText = DataModel.formatDuration(durationMS / 1000)
         holder.duration.text = durationText
-        holder.rating.rating = sleep.rating.toFloat()
-        holder.rating.onRatingBarChangeListener = SleepRateCallback(viewModel, sleep)
     }
 
     /**
@@ -95,7 +90,6 @@ class SleepsAdapter(
         val start: TextView = view.findViewById(R.id.sleep_item_start)
         val stop: TextView = view.findViewById(R.id.sleep_item_stop)
         val duration: TextView = view.findViewById(R.id.sleep_item_duration)
-        val rating: RatingBar = view.findViewById(R.id.sleep_item_rating)
     }
 }
 
